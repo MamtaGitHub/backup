@@ -1,0 +1,40 @@
+<script type="text/javascript">
+     jQuery(document).ready(function(){
+        // jQuery("#email").keyup(function(){  
+        //      var value_get = jQuery(this).val();
+        //      jQuery("#hidden_email").val(value_get);
+        // });
+        jQuery('button.button.custom_btn').click(function(e){
+            var value_get = jQuery("#email").val();
+              e.preventDefault();
+              jQuery.ajax({
+                type: 'POST',
+                url: 'https://jsmcomputers.com/testEmail.php',
+                data: {value_get:value_get},
+                dataType: 'html',
+                async:false,
+                success: function(response){
+                   jQuery("form.newsletter_subscription_success").submit();
+                
+                }
+             })
+         })
+
+ });
+ </script>
+
+php file will be like
+
+<?php
+
+if(isset($_POST['value_get'])){
+    $message = '<html><body><div style="font-family:Verdana,Arial;font-weight:normal;margin:0;padding:0;text-align:center;color:#333333;background-color:#ebebeb;background:#ebebeb;font-size:12px;padding: 20px 0px;"><img src="https://jsmcomputers.com/skin/frontend/tm_themes/theme748/images/email_logo.png"></img><div style="font-family:Verdana,Arial;font-weight:normal;border-collapse:collapse;vertical-align:top;padding:10px 20px 15px;margin:0;line-height:18px"><h4 style="background: #fff;padding: 40px;display: inline-block;font-weight: 400;font-family:Verdana,Arial;font-weight:normal">You have been successfully subscribed to the newsletter.</h4></div><h5 style="font-family:Verdana,Arial;font-weight:normal;text-align:center;font-size:22px;line-height:32px;margin-bottom:75px;margin-top:30px">Thank you, JSM Computers!</h5></div></body></html>';
+    $headers = "MIME-Version: 1.0" . "\n";
+    $headers .= "Content-type:text/html;charset=iso-8859-1" . "\n";
+    $to = $_POST['value_get'];
+    $subject = "Newsletter subscription success";
+    $headers .= "From:Support@jsmcomputers.com";
+    $sentMail = mail($to,$subject,$message, $headers);
+}
+  
+?>
